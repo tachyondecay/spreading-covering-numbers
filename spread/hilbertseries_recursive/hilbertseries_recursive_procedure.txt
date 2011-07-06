@@ -1,0 +1,38 @@
+Recursive algorithm for calculating the spreading number.
+
+We will make use of the fact that:
+    HS(k[\Delta_n],t) = HS(k[\Delta_{n-1}),t) + HS(Iint,t) - HS(k[z_1..z_t],t)
+
+where:
+    - k[\Delta_n] is the Stanley-Reisner ring for simplicial complex \Delta_n
+    - t = binomial(n + d - 2, n - 2)
+    - k = binomial(n + d - 1, n - 1)
+    - Iint is the intersection of I_{\Delta_n} and (z_{t + 1},...,z_k)
+
+Also note that we have a formula for HS(k[z_1..z_t],t):
+
+HS(k[z_1..z_t,t],t) = 1/(1 - T)^t
+
+So we will find HS(k[\Delta_{n-1}),t) with recursion, compute HS(IInt,t), and 
+add the three expressions to find the overall Hilbert series.
+
+PROCEDURE:
+
+1.	Take n,d > 0.
+2.	Let k := binomial(n + d - 1, n - 1), t := binomial(n + d - 2, n - 2).
+3.	Let R := QQ[x_1..x_n], S := QQ[z_1..z_k].
+4.	Compute the Stanley-Reisner ideal for \Delta_n and give label it "I". 
+5.	Compute the intersection of I and (z_{t + 1},...,z_k) and label it "J".
+6.	Let zRingHS := 1/(1 - T)^t (this should be a Divide expression 
+	somehow?)
+7.	Let JHS := hilbertSeries J.
+8.	Go to step 1, input n - 1, d.  Label the return value "prevHS".
+9.	Let fullHS := prevHS + JHS - zRingHS.
+10.	Reduce fullHS (using reduceHilbert if possible).
+11.	Return fullHS.
+
+After, we'll wrap this in an algorithm that returns the degree of the 
+numerator of fullHS, which will be the dimension of the Stanley-Reisner ring, 
+and thus the spreading number.
+
+Reminder: fullHS MUST BE FULLY REDUCED to get the correct dimension.

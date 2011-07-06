@@ -1,0 +1,57 @@
+Recursive algorithm for calculating the spreading number.
+
+Thanks to Adam, we have the following:
+    a_n(d) >= a_n(d - 2) + a_{n-1}(d)
+
+To see this, start with the graph S_n(d), n >= 2, d >= 3.  The induced subgraph 
+on all vertices divisible by x_1^2 will be isomorphic to S_n(d - 2).  The 
+induced subgraph on all vertices _not_ divisble by x_1 will be isomorphic to 
+S_{n-1}(d).  The remaining vertices will each be divisible by x_1 and form a 
+buffer between these two subgraphs.
+
+So an independent set from S_n(d - 2) and an independent set from S_{n-1}(d) 
+will form an independent set on S_n(d), since these two subgraphs are 
+independent.  Hence the inequality.  The reason it's not a strict equality is 
+because one or more vertices from the buffer may contribute to the formation 
+of a larger maximum independent set.  (For example, take S_3(3).  Its maximum 
+independent set is {x_1^3, x_2^3, x_3^3, x_1*x_2*x_3}, where x_1*x_2*x_3 comes 
+from the buffer.
+
+GOAL:
+    Create a recursive algorithm that, knowing the maximum independent sets 
+    for S_n(d - 2) and S_{n-1}(d), computes the maximum independent set for 
+    S_n(d) by checking to see if each vertex in the buffer creates a larger 
+    independent set.
+
+PROCEDURE:
+
+1.	Take n,d > 0.
+2.	If n = 1 or d = 1, return {x_1^d}.
+3.	If d = 2, return {x_1^2,...,x_n^2}.
+4.	Otherwise, we need the maximum independent sets for S_n(d - 2), 
+	S_{n-1}(d).
+	    a. Go to step 1, input n, d - 2.  Label the return value "x1sq".
+	    b. Go to step 1, input n - 1, d.  Label the return value "nox1".
+	    c. Take x1sq + nox1.  Label the return value "candidate".
+5.	We now have an independent set ("candidate") on S_n(d).  Now we 
+	iterate through the buffer set to check if a larger independent set 
+	can be found.
+	    a. Initialize a list of "subcandidate sets", labelled 
+	       subcandidates.
+	    b. Let subcandidate#0 = candidate.
+	    c. For each element in buffer, check if it is adjacent to any 
+	    element of candidate.
+		1. Take the neighbors of element.  Label the return value 
+		   "neighbours".
+		2. Check if neighbors * subcandidate#i = {}.  If so, 
+		   let subcandidate#i = subcandidate#i + element.
+		3. Let subcandidate#(i + 1) = subcandidate#i.  Go to step 5c. 
+	    d. Take the set in the list of subcandidates that has the largest 
+	       cardinality.  Label the return value "indep".
+6.	Return "indep".
+
+After, we'll wrap this in an algorithm that returns the number for us.
+
+Also may want to consider storing the independent sets in memory for loading into the 
+function manually, instead of forcing it to fully recurse every single time we want 
+to find a number.

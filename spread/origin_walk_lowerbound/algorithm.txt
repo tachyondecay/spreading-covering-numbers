@@ -1,0 +1,18 @@
+Flow for the algorithm for S_3(5):
+
+1.	Take one vertex from the central clique. This is arbitrary.
+		-In our case, 221 is fine.
+2.	Designate this vertex the "origin."
+3.	If the origin is not in our independent set, add it to the set.
+4.	Eliminate the adjacent vertices.
+		- At this point, there are six:
+			- 212, 122, the rest of the clique.
+			- 131, 311, the 2 vertices from (3,1,1) adjacent to 221
+			- 230, 320, the 2 vertices from (3,2,0) adjacent to 221
+5.	If there are vertices two degrees removed from the origin, continue to step 5.
+	Else, go to step 7.
+6.	If there is only one eligible vertex, move to it.
+	Else move to a vertex adjacent to two of the vertices eliminated in step 3 (does not matter which one).
+	Go to step 2.
+7.	If the current vertex is the first in our set list, terminate.
+	Else, move to the immediately previous vertex in our set list and go to step 2.
