@@ -80,10 +80,7 @@ spreadingNumberBound = (n,d) -> (
 			sum parts#i
 		)
 	);
-	print numPartsCliques;
-	print parts;
 	edgeIdealGens := apply(edges G, product);
-	--print dim edgeIdeal G;
 
 	modifiedIdeal := ideal(parts | edgeIdealGens);
 	modifiedIdealDim := time dim(T/modifiedIdeal);
