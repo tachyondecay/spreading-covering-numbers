@@ -1,15 +1,22 @@
--- This is a test script that compares the dimension of the edge ideal and the
--- "modified" ideal we create. The theory is that the modified ideal dimension 
--- will be faster to compute, but we can use it to provide an upper bound 
--- for the spreading number.
+-- Macaulay2 function to compute an upper bound of the spreading number
 --
 -- Ben Babcock <bababcoc@lakeheadu.ca
 -------------------------------------------------------------------------------
 
 needsPackage "EdgeIdeals";
 
+isClique = method();
+isClique(Graph, List) := (G,c) -> (
+	for i when i < #c do (
+		for j from i + 1 to (#c - 1) do (
+			if not isEdge(G, {c#i, c#j}) then return false;
+		);
+	);
+	return true;
+);
 
-idealComparison = (n,d) -> (
+
+spreadingNumberBound = (n,d) -> (
 	if n == 1 or d == 1 then return 1;
 	if d == 2 then return n;
 
@@ -65,15 +72,21 @@ idealComparison = (n,d) -> (
 		vClass
 	);
 
-	parts = for i when i < #parts list (if #(unique parts#i) == 1 then continue else sum parts#i);
-	edgeIdealGens := flatten entries gens edgeIdeal G;
+	numPartsCliques := 0;
+	parts = for i when i < #parts list (
+		if #(unique parts#i) == 1 then continue
+		else (
+			if isClique(G, parts#i) then numPartsCliques = numPartsCliques + 1;
+			sum parts#i
+		)
+	);
+	print numPartsCliques;
+	print parts;
+	edgeIdealGens := apply(edges G, product);
+	--print dim edgeIdeal G;
 
 	modifiedIdeal := ideal(parts | edgeIdealGens);
-	print ("Degree: " | d);
-	print ("Computing edge ideal dimension...");
-	edgeIdealDim := time dim(T/edgeIdeal G);
-	print ("Edge ideal dimension is " | edgeIdealDim);
-	print ("Computing dimension of modified ideal.");
 	modifiedIdealDim := time dim(T/modifiedIdeal);
-	print ("Modified ideal dimension is " | modifiedIdealDim);
+	print modifiedIdealDim;
+	return modifiedIdealDim + #parts - numPartsCliques;
 );
