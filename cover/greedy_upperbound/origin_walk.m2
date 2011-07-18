@@ -45,7 +45,7 @@ coveringNumberBound = (n,d) -> (
 
 	graphOrbits := reverse orbits(n,d);
 	for orb when orb < #graphOrbits do (
-		<< "Orbit: " << graphOrbits#orb << endl;
+		--<< "Orbit: " << graphOrbits#orb << endl;
 		f := factor product for i when i < #(graphOrbits#orb) list x_(i+1)^(graphOrbits#orb#i);
 		for i when i < #sGroup do (
 			sigma := sGroup#i;
@@ -71,7 +71,7 @@ coveringNumberBound = (n,d) -> (
 	);
 
 	print ("Unminimized cover (size: " | #upCover | ")");
-	print upCover;
+	--print upCover;
 
 	-- Minimize the cover
 	while true do (
@@ -101,7 +101,7 @@ coveringNumberBound = (n,d) -> (
 	);
 
 	print("Minimized cover (size " | #upCover | ")");
-	print upCover;
+	--print upCover;
 
 	return #upCover;
 );
