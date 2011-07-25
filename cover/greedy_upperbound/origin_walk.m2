@@ -1,6 +1,7 @@
 needsPackage "EdgeIdeals";
 
 coveringNumberBound = (n,d) -> (
+	<< "Degree " << d << " in " << n << " variables " << endl;
 	if n == 1 or d == 1 then return 1;
 	if d == 2 then return n;
 
