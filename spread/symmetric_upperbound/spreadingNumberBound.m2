@@ -84,6 +84,6 @@ spreadingNumberBound = (n,d) -> (
 
 	modifiedIdeal := ideal(parts | edgeIdealGens);
 	modifiedIdealDim := time dim(T/modifiedIdeal);
-	print modifiedIdealDim;
+	--print modifiedIdealDim;
 	return modifiedIdealDim + #parts - numPartsCliques;
 );
