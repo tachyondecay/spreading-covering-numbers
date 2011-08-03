@@ -49,10 +49,18 @@ spreadingNumberBound = (n,d) -> (
 		L = toList(set(L) - ({v} | neighbors(G,v)));
 	);
 
+	-- For each vertex in the maximal set, find its neighbours and add them to that vertex
 	newGens := apply(W, v -> (v + sum neighbors(G,v)));
 	edgeIdealGens := apply(edges G, product);
+
+	-- Create a new ideal with these new generators
 	modifiedIdeal := ideal(newGens | edgeIdealGens);
 	modifiedIdealDim := time dim(T/modifiedIdeal);
-	return modifiedIdealDim + #newGens;
+	upperBound := modifiedIdealDim + #newGens;
+
+	-- If the upper bound matches the cardinality of the maximal set, then it must be 
+	-- the spreading number.
+	if #W == upperBound then print "Lower bound and upper bound equal.";
+	return upperBound;
 );
 
