@@ -34,9 +34,9 @@ orbits(ZZ,ZZ) := (n,d) -> (
 -- Options
 --	OutputSet	Boolean. When true, output the maximum independent 
 --			set.  When false, output just the number.  Default false.
-spreadingNumber = method(Options => {OutputSet => false});
+spreadingNumberBound = method(Options => {OutputSet => false});
 
-spreadingNumber(ZZ,ZZ) := opts -> (n,d) -> (
+spreadingNumberBound(ZZ,ZZ) := opts -> (n,d) -> (
 	if n == 1 or d == 1 then return 1;
 	if d == 2 then return n;
 
