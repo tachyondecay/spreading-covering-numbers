@@ -54,7 +54,7 @@ spreadingNumberBound = (n,d) -> (
 	edgeIdealGens := apply(edges G, product);
 
 	-- Create a new ideal with these new generators
-	modifiedIdeal := ideal(newGens | edgeIdealGens);
+	modifiedIdeal := ideal(edgeIdealGens | newGens);
 	modifiedIdealDim := time dim(T/modifiedIdeal);
 	upperBound := modifiedIdealDim + #newGens;
 
