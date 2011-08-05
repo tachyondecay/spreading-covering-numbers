@@ -55,7 +55,7 @@ spreadingNumberBound = (n,d) -> (
 
 	-- Create a new ideal with these new generators
 	modifiedIdeal := ideal(edgeIdealGens | newGens);
-	modifiedIdealDim := time dim(T/modifiedIdeal);
+	modifiedIdealDim := time dim modifiedIdeal;
 	upperBound := modifiedIdealDim + #newGens;
 
 	-- If the upper bound matches the cardinality of the maximal set, then it must be 
